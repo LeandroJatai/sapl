@@ -1,9 +1,31 @@
-FROM python:3.6
-ENV PYTHONUNBUFFERED 1
+FROM python:3.9-slim-buster
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+
+ENV BUILD_PACKAGES apt-utils apt-file libpq-dev graphviz-dev build-essential git pkg-config \
+                   python3-dev libxml2-dev libjpeg-dev libssl-dev libffi-dev libxslt1-dev \
+                   libcairo2-dev software-properties-common python3-setuptools python3-pip
+
+ENV RUN_PACKAGES graphviz python3-lxml python3-magic postgresql-client python3-psycopg2 \
+                 poppler-utils curl jq bash vim python3-venv tzdata \
+                 fontconfig ttf-dejavu python
+
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends $BUILD_PACKAGES $RUN_PACKAGES
+
+RUN fc-cache -fv && \
+pip install --upgrade pip && \
+pip3 install --no-cache-dir --upgrade pip setuptools
+
+RUN mkdir /sapl-dev
 WORKDIR /sapl-dev
 COPY ./requirements ./requirements/
-RUN apt update && \
-    apt -y install graphviz-dev && \
-    pip install --upgrade pip && \
-    pip install -r ./requirements/dev-requirements.txt
+RUN pip install -r ./requirements/dev-requirements.txt
+
 EXPOSE 8000
+
+CMD ["/sapl-dev/docker/start-dev.sh"]
