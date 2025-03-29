@@ -1,4 +1,4 @@
-django==4.2.14
+django==4.2.20
 
 django-image-cropping==1.7
 django-crispy-forms==2.2
