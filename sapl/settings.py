@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     'django_extensions',
 
     'crispy_forms',
+    'crispy_bootstrap4',
 
     'waffle',
 
@@ -145,7 +146,7 @@ MIDDLEWARE = [
 if DEBUG:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
-    INTERNAL_IPS = ('127.0.0.1')
+    INTERNAL_IPS = ('127.0.0.1', )
 
 SITE_URL = config('SITE_URL', cast=str, default='')
 
@@ -234,6 +235,8 @@ DATABASES = {
         cast=db_url,
     )
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 IMAGE_CROPPING_JQUERY_URL = None
 THUMBNAIL_PROCESSORS = (

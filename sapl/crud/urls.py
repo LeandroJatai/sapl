@@ -1,5 +1,5 @@
-from django.conf.urls import include, url
+from django.urls.conf import re_path, include
 
 urlpatterns = [
-    url(r'', include('stub_app.urls')),
+    re_path(r'', include('stub_app.urls')),
 ]

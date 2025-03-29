@@ -33,13 +33,15 @@ from django.db.models.fields.related import ForeignKey
 from django.forms import BaseForm
 from django.forms.widgets import SplitDateTimeWidget, ClearableFileInput
 from django.http.response import JsonResponse, HttpResponse
-from django.utils import six, timezone
+from django.utils import timezone
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import django_filters
 from easy_thumbnails import source_generators
+from image_cropping.widgets import ImageCropWidget, get_attrs
 import magic
 import requests
+import six
 from unipath.path import Path
 from xlsxwriter.workbook import Workbook
 
@@ -306,6 +308,16 @@ class SaplGenericRelation(GenericRelation):
 
         self.fields_search = fields_search
         super().__init__(to, **kwargs)
+
+
+class CustomImageCropWidget(ImageCropWidget):
+    def subwidgets(self, name, value, attrs=None):
+        if not attrs:
+            attrs = {}
+        if value:
+            attrs.update(get_attrs(value, name))
+
+        return super().subwidgets(name, value, attrs=attrs)
 
 
 class ImageThumbnailFileInput(ClearableFileInput):

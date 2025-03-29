@@ -9,17 +9,21 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 install_requires = [
-    'django>=1.11.19,<3.0',
-    'django-haystack==2.8.1',
+    'django==4.2.14',
+
+    'django-image-cropping==1.7',
+    'django-crispy-forms==2.2',
+    'django-extensions==3.2.3',
+    'django-haystack==3.2.1',
+    'djangorestframework==3.15.2',
+    'crispy-bootstrap4==2024.1',
+
+
     'django-filter==2.0.0',
-    'djangorestframework==3.11.2',
     'dj-database-url==0.5.0',
     'django-braces==1.9.0',
-    'django-crispy-forms==1.7.2',
     'django-extra-views==0.12.0',
     'django-model-utils==3.1.2',
-    'django-extensions==2.1.4',
-    'django-image-cropping==1.2.0',
     'django-webpack-loader==0.6.0',
     'drf-yasg==1.20.0',
     'easy-thumbnails==2.5',

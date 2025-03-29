@@ -5,7 +5,6 @@ from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 from crispy_forms.layout import Field, Layout
 from django import forms
 from django.conf import settings
-from django.conf.urls import url
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,9 +13,10 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.http.response import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.urls.conf import re_path
 from django.utils.decorators import classonlymethod
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 from django.views.generic.base import ContextMixin
@@ -27,6 +27,7 @@ from sapl.crispy_layout_mixin import SaplFormHelper
 from sapl.rules import (RP_ADD, RP_CHANGE, RP_DELETE, RP_DETAIL,
                         RP_LIST)
 from sapl.utils import normalize
+
 
 logger = logging.getLogger(settings.BASE_DIR.name)
 
@@ -433,9 +434,9 @@ class CrudListView(PermissionRequiredContainerCrudMixin, ListView):
                     hook = 'hook_header_{}'.format(''.join(fn))
                     if hasattr(self, hook):
                         header = getattr(self, hook)()
-                        s.append(force_text(header))
+                        s.append(force_str(header))
                     else:
-                        s.append(force_text(f.verbose_name))
+                        s.append(force_str(f.verbose_name))
                 else:
                     hook = 'hook_header_{}'.format(''.join(fn))
                     if hasattr(self, hook):
@@ -1029,7 +1030,7 @@ class Crud:
             if crud[0]:
                 cruds.append(crud)
 
-        return [url(regex, view.as_view(), name=view.url_name(suffix))
+        return [re_path(regex, view.as_view(), name=view.url_name(suffix))
                 for regex, view, suffix in cruds]
 
     @classonlymethod
